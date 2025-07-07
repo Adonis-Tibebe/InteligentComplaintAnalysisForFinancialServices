@@ -159,6 +159,10 @@ data/processed/*
 # ✅ Allow all .dvc files anywhere under data/
 !data/**/*.dvc
 
+# vector_store
+vector_store/*
+!vector_store/*.dvc
+
 
 # Logs
 logs/
