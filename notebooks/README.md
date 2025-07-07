@@ -1,6 +1,6 @@
 # Notebooks
 
-This directory contains Jupyter notebooks related to the **Intelligent Complaint Analysis for Financial Services** project. The notebooks document the step-by-step process of data exploration, cleaning, preprocessing, and analysis of consumer complaint data from the CFPB.
+This directory contains Jupyter notebooks related to the **Intelligent Complaint Analysis for Financial Services** project. The notebooks document the step-by-step process of data exploration, cleaning, preprocessing, and analysis of consumer complaint data from the CFPB, and the step by step process of chunking, embedding and vector indexing pipline implementation.
 
 ## Current Notebooks
 
@@ -21,6 +21,21 @@ This directory contains Jupyter notebooks related to the **Intelligent Complaint
   The majority of complaints are concentrated in a few product categories. After filtering and cleaning, the dataset is focused on five relevant categories with only substantive complaint narratives retained. Text normalization was successfully applied, preparing the data for further analysis or modeling.
 
 ---
+
+### text-chunking_embeding_and_vector-store_indexing.ipynb
+
+- **Purpose:** 
+  containt the implementation of chunking using langchains RecursiveCharacterTextSplitter to chunk text and then embeding them using hugging faces scentence-transformer and then lastly store the vector along with index in a faiss vector database
+- **Key Steps:**
+- Data Loading and Pipeline intialization 
+- Text chunking using langchains RecursiveCharacterTextSplitter
+- Chunk embedding using hugging faces scentence-transformer,model name all-MiniLM-L6-v2
+- Creating a fiass vector database along with Indexing and metadata
+- Artifact storing- indexes and Final Dataframes needed for querry execution
+- **Key TakeAways:**  
+- The notebook provides a robust, end-to-end workflow for transforming complaint narratives into a vector-searchable format.
+- All steps, from chunking to embedding and indexing, are automated and reproducible.
+- The resulting system enables fast, semantic search over large collections of complaint data, supporting advanced analytics and retrieval use cases in Financial Services
 
 ## How to Use
 
