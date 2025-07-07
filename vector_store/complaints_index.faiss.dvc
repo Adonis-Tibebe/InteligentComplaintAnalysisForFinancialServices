@@ -1,0 +1,5 @@
+outs:
+- md5: a605cb06533e898091c48cb8be00e434
+  size: 966128685
+  hash: md5
+  path: complaints_index.faiss
