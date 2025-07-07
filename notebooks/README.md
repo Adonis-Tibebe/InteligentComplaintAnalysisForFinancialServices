@@ -50,4 +50,4 @@ When adding or updating notebooks, please use the following template:
 
 ---
 
-*For questions or suggestions, please contact the project
+*For questions or suggestions, please contact the projecti
