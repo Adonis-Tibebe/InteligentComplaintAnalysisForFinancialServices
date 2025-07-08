@@ -1,8 +1,21 @@
-pandas==1.5.3
-numpy==1.23.5
-matplotlib==3.7.1             
-sentence-transformers==2.2.2   
-langchain==0.1.14              
-faiss-cpu==1.7.4               
-scikit-learn==1.2.2            
-tqdm==4.65.0 
+pandas==2.3.1
+numpy==2.2.6
+matplotlib==3.10.3
+regex==2024.11.6
+sentence-transformers==5.0.0
+langchain==0.3.26
+langchain-core==0.3.68
+langchain-text-splitters==0.3.8
+faiss-cpu==1.11.0
+llama_cpp_python==0.2.26
+torch==2.7.1
+transformers==4.53.1
+streamlit==1.46.1
+pytest==8.4.1
+pyarrow==20.0.0
+scikit-learn==1.7.0
+tqdm==4.67.1
+joblib==1.5.1
+PyYAML==6.0.2
+unicodedata  # built-in, doesn't require install
+re           # built-in, doesn't require install
