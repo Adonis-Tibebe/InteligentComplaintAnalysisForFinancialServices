@@ -102,8 +102,11 @@ class ComplaintVectorPipeline:
             # Optionally add full complaint text from filtered_df
             if return_full_text and self.filtered_df is not None:
                 source_rows = result["source_row"].values
-                full_texts = self.filtered_df.iloc[source_rows]
-                result = result.join(full_texts[text_column].reset_index(drop=True), rsuffix="_full")
+                full_texts = self.filtered_df.iloc[source_rows][[text_column]]
+                full_texts = full_texts.rename(columns={text_column: f"{text_column}_full"})
+                full_texts = full_texts.reset_index(drop=True)
+                result = pd.concat([result.reset_index(drop=True), full_texts], axis=1)
+
 
             results.append(result)
 
