@@ -1,68 +1,81 @@
-# Notebooks
+# 🧠 Notebooks: Intelligent Complaint Analysis for Financial Services
 
-This directory contains Jupyter notebooks related to the **Intelligent Complaint Analysis for Financial Services** project. The notebooks document the step-by-step process of data exploration, cleaning, preprocessing, and analysis of consumer complaint data from the CFPB, and the step by step process of chunking, embedding and vector indexing pipline implementation.
-
-## Current Notebooks
-
-### EDA_and_Data_Preprocessing.ipynb
-
-- **Purpose:**  
-  Performs exploratory data analysis (EDA) and preprocessing on the raw complaints dataset.
-- **Key Steps:**
-  - Loads and inspects the raw data.
-  - Analyzes the distribution of complaints across product categories.
-  - Calculates and visualizes word counts for complaint narratives.
-  - Filters the dataset to focus on five key product categories using defined proxies.
-  - Removes complaints without narrative text.
-  - Normalizes complaint narratives to improve text quality for downstream tasks.
-  - Saves the cleaned and processed data in both CSV and Parquet formats.
-
-- **Key Findings:**  
-  The majority of complaints are concentrated in a few product categories. After filtering and cleaning, the dataset is focused on five relevant categories with only substantive complaint narratives retained. Text normalization was successfully applied, preparing the data for further analysis or modeling.
+This directory documents the notebook-based workflow behind the Intelligent Complaint Analysis project. These notebooks detail the full pipeline: from cleaning raw complaints data to building a retrieval-augmented generation (RAG) system powered by chunking, embedding, indexing, prompting, and response evaluation.
 
 ---
 
-### text-chunking_embeding_and_vector-store_indexing.ipynb
+## 📓 Available Notebooks
 
-- **Purpose:** 
-  containt the implementation of chunking using langchains RecursiveCharacterTextSplitter to chunk text and then embeding them using hugging faces scentence-transformer and then lastly store the vector along with index in a faiss vector database
-- **Key Steps:**
-- Data Loading and Pipeline intialization 
-- Text chunking using langchains RecursiveCharacterTextSplitter
-- Chunk embedding using hugging faces scentence-transformer,model name all-MiniLM-L6-v2
-- Creating a fiass vector database along with Indexing and metadata
-- Artifact storing- indexes and Final Dataframes needed for querry execution
-- **Key TakeAways:**  
-- The notebook provides a robust, end-to-end workflow for transforming complaint narratives into a vector-searchable format.
-- All steps, from chunking to embedding and indexing, are automated and reproducible.
-- The resulting system enables fast, semantic search over large collections of complaint data, supporting advanced analytics and retrieval use cases in Financial Services
+### 1. `EDA_and_Data_Preprocessing.ipynb`
 
-## How to Use
+🔍 **Purpose:**  
+Explore and clean raw complaint data from the CFPB to prepare it for semantic indexing.
 
-- Open any notebook in this directory with Jupyter or VS Code.
-- Follow the markdown and code cells for a step-by-step walkthrough of the analysis.
-- Outputs and visualizations are generated inline for transparency and reproducibility.
+🧩 **Key Steps:**
+- Load original data and inspect basic structure
+- Analyze product-level complaint distributions
+- Visualize word count distributions
+- Filter narratives based on word count and key product proxies
+- Normalize complaint text (e.g., punctuation, dates, unicode)
+- Export cleaned dataset in `.csv` and `.parquet` formats
 
-## Template for Documenting Future Changes
-
-When adding or updating notebooks, please use the following template:
-
-### [Notebook Name].ipynb
-
-- **Purpose:**  
-  [Briefly describe the notebook's objective.]
-- **Key Steps:**
-  - [List the main steps or sections in the notebook.]
-- **Key Findings / Results:**  
-  [Summarize the main findings, results, or outputs.]
+📊 **Key Insight:**  
+Filtered dataset contains substantive complaints across five major financial products, cleaned and normalized for downstream language modeling.
 
 ---
 
-## Changelog
+### 2. `text-chunking_embedding_vector-store_indexing.ipynb`
 
-- *[YYYY-MM-DD]*: [Short description of the change, e.g., "Added EDA_and_Data_Preprocessing notebook."]
-- *[YYYY-MM-DD]*: [Describe further updates or new notebooks.]
+🧠 **Purpose:**  
+Transform cleaned complaints into a vector-searchable format using chunking, embeddings, and FAISS indexing.
+
+⚙️ **Key Steps:**
+- Initialize `ComplaintVectorPipeline`
+- Perform recursive chunking using LangChain's `RecursiveCharacterTextSplitter`
+- Embed chunks via `sentence-transformers` using the `all-MiniLM-L6-v2` model
+- Normalize vectors and build a FAISS index (`IndexFlatIP`)
+- Attach metadata (product, issue, ID) to each chunk
+- Save artifacts: chunked DataFrame and FAISS index
+
+📦 **Output:**  
+Vector database ready for semantic querying of financial complaint excerpts.
 
 ---
 
-*For questions or suggestions, please contact the projecti
+### 3. `rag-core-logic-and-evaluation.ipynb`
+
+🧪 **Purpose:**  
+Execute and validate the full RAG loop — retrieval, prompt assembly, model response, and answer analysis.
+
+🔁 **Key Steps:**
+- Load cleaned data and vector index
+- Configure the `RAGAgent`, composed of:
+  - `ComplaintVectorPipeline.search()` for semantic chunk retrieval
+  - `PromptBuilder` to inject context into structured instruction prompt
+  - `LLMClient` or `LLMClient_For_Llama` to generate responses using Mistral
+- Evaluate system on 9 representative user queries
+- Record results in structured summary table for analysis
+
+📈 **Key Outcome:**  
+System generates coherent, bullet-pointed answers to financial queries based on complaint corpus context — validated through comparison and qualitative scoring.
+
+---
+
+## 🧑‍💻 Usage Notes
+
+- Launch notebooks using Jupyter Lab or VS Code
+- Ensure all required modules (in `requirements.txt`) are installed
+- Generated visualizations and text outputs are inline and reproducible
+- Notebook outputs feed directly into the `src/` modules and the Streamlit app
+
+---
+
+## 📌 Notes
+
+- Quantized Mistral model used via `llama_cpp` for offline generation
+- Evaluation demonstrates prompt engineering and model alignment with task goals
+- Output summaries follow structured financial QA guidance
+
+---
+
+Feel free to extend the pipeline with new product categories, evaluation prompts, or model variants. These notebooks form the analytical backbone of the Intelligent Complaint Analysis system.
