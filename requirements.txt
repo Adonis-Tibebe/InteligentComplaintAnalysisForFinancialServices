@@ -17,5 +17,3 @@ scikit-learn==1.7.0
 tqdm==4.67.1
 joblib==1.5.1
 PyYAML==6.0.2
-unicodedata  # built-in, doesn't require install
-re           # built-in, doesn't require install
