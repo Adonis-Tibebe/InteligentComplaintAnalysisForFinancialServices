@@ -171,3 +171,10 @@ logs/
 # Temporary files
 *.tmp
 *.temp
+
+# llma venv
+/llama_venv
+
+# models
+/models
+!models/**/*.dvc
