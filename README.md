@@ -1,83 +1,91 @@
-# Intelligent Complaint Analysis for Financial Services
+# 💡 Intelligent Complaint Analysis for Financial Services
 
-A comprehensive NLP project for analyzing consumer complaint data from the Consumer Financial Protection Bureau (CFPB). This project provides a full framework for cleaning, analyzing, and transforming complaint narratives into a vector-searchable format for semantic exploration and retrieval.
+A modular Retrieval-Augmented Generation (RAG) system for analyzing consumer complaints from the Consumer Financial Protection Bureau (CFPB). This project transforms textual complaint data into a vector-searchable format, enabling semantic exploration, evaluation, and structured generation. Built with low-resource environments in mind, it supports both notebook-based workflows and a Streamlit UI powered by a quantized Mistral model via `llama_cpp`.
 
 ---
 
 ## 📁 Project Structure
+📁 project_root/
+├── 📁 notebooks/                            # Jupyter notebooks for development & evaluation
+│   ├── EDA_and_Data_Preprocessing.ipynb          # EDA, normalization, word filtering
+│   ├── text-chunking_embedding_vector-indexing.ipynb  # Chunking, embeddings, FAISS indexing
+│   └── rag-core-logic-and-evaluation.ipynb       # Retrieval, prompting, generation & analysis
+│
+├── 📁 src/                                  # Source code for RAG pipeline and app
+│   ├── 📁 core/                                   # Core logic: preprocessing, embedding, retrieval
+│   │   ├── ComplaintVectorPipeline.py                # Chunker, embedder, retriever, index builder
+│   │   └── utils.py                                  # Text normalization, loaders, plots
+│   │
+│   ├── 📁 models/                                 # Model orchestration & RAG abstraction
+│   │   └── RAG_Pipeline.py                           # PromptBuilder, LLMClient, RAGAgent classes
+│   │
+│   └── 📁 services/
+│       └── 📁 streamlit/                            # Streamlit app frontend
+│           └── rag_interface.py                        # Interface using quantized Mistral model
+│
+├── 📁 data/                                 # Data storage
+│   ├── 📁 raw/                                    # Original CFPB complaint CSVs
+│   └── 📁 processed/                              # Filtered & chunked data for retrieval
+│
+├── 📁 vector_store/                        # FAISS vector index
+│   └── complaints_index.faiss                  # Prebuilt FAISS index
+│
+├── 📁 models/                             # LLMs and embeddings
+│   └── 📁 mistral_condensed/                    # Quantized Mistral model (.gguf format)
+│
+├── 📁 tests/                              # Unit and integration tests
+│   ├── test_ComplaintVectorPipeline.py         # Chunking, embeddings, retrieval tests
+│   ├── test_RAGAgent.py                        # Prompting and generation logic
+│   ├── test_utils.py                           # Normalizer and utility function tests
+│   └── test_rag_interface_minimal.py           # Minimal app test (without full model load)
+│
+└── requirements.txt                      # Python dependencies for the project
 
-```
-├── notebooks/                          # Analysis workflows
-│   ├── EDA_and_Data_Preprocessing.ipynb       # Data cleaning & EDA
-│   └── text-chunking_embedding_vector-indexing.ipynb  # NLP pipeline
-├── src/                                # Core code
-│   ├── core/ComplaintVectorPipeline.py # Main processing logic
-│   └── utils/utils.py                  # Helper functions
-├── data/                               # Dataset storage
-│   ├── raw/                            # Original CFPB data
-│   └── processed/                      # Cleaned datasets
-└── requirements.txt                    # Python dependencies
-```
 
 ---
 
-## 🚀 Key Features
+## 🚀 Core Components
 
-- Efficient data processing using **pandas**, **NumPy**, and **Matplotlib**
-- Smart chunking and embedding of complaint narratives via **LangChain** and **sentence-transformers**
-- Vector indexing and semantic search using **FAISS**
-- Modular and reproducible workflows with Jupyter notebooks and Python scripts
-- Scalable setup for Retrieval-Augmented Generation (RAG) applications
+### ✅ Data Processing (`ComplaintVectorPipeline.py`)
+- Recursive chunking (`langchain.text_splitter`)
+- Embedding with `sentence-transformers`
+- FAISS inner-product index for similarity search
+- Metadata mapping for traceability
+
+### 🎨 Prompting & Generation (`RAG_Pipeline.py`)
+- `PromptBuilder`: Inserts context and user query into structured template
+- `LLMClient`: Interfaces with Hugging Face pipelines
+- `LLMClient_For_Llama`: Custom wrapper for quantized Mistral (`llama_cpp`)
+- `RAGAgent`: Glues together search → prompt → generate
+
+### 📊 Evaluation (`rag-core-logic-and-evaluation.ipynb`)
+- Simulated RAG pipeline run over 9 curated financial questions
+- Answers analyzed via tabular summaries
+- Tests Mistral's contextual accuracy and prompt shaping
 
 ---
 
-## 🔧 Getting Started
+## 🌐 Streamlit Interface (`rag_interface.py`)
 
-### Step 1: Clone the Repository
+A streamlined interactive app using:
+
+-  Quantized Mistral (7B) via `llama_cpp` for low-resource CPU inference
+-  Cached embeddings and FAISS index
+-  Real-time question input and answer rendering
+-  Stateless prompt wrapping with `LLMClient_For_Llama`
+
+### Setup
 
 ```bash
-git clone https:https://github.com/Adonis-Tibebe/InteligentComplaintAnalysisForFinancialServices
-```
+# for notebook implementaion create a .venv file with python 3.13.
+python -m venv .venv
+source .venv/Scripts/activate   # On bash: .\llama_venv\Scripts\Activate
+# Create virtual environment with Python 3.10(for streamlit app)
+python3.10 -m venv llama_venv
+source llama_venv/Scripts/activate  # On bash: .\llama_venv\Scripts\Activate
 
-### Step 2: Install Dependencies
-
-```bash
+# Install dependencies
 pip install -r requirements.txt
-```
 
-### Step 3: Launch the Notebooks
-
-Navigate to the `notebooks/` directory and launch with:
-
-```bash
-jupyter notebook
-# or
-code notebooks/
-```
-
----
-
-## 📓 Notebooks Overview
-
-### `EDA_and_Data_Preprocessing.ipynb`
-
-- Perform exploratory data analysis (EDA)
-- Clean and normalize the complaints
-- Generate word count distributions and filter short entries
-
-### `text-chunking_embeding_and_vector-store_indexing.ipynb`
-
-- Chunk long complaints using a recursive splitting strategy
-- Embed each chunk using `all-MiniLM-L6-v2`
-- Normalize vectors and store them in a FAISS index
-- Enable semantic search and contextual retrieval
-
----
-
-## 📄 License
-
-This project is licensed under the [MIT License](LICENSE).
-
----
-
-Have questions or ideas? Open an issue or start a discussion — we’d love to collaborate!
+# Launch the app
+streamlit run src/services/streamlit/rag_interface.py
