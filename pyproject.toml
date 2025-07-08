@@ -1,12 +1,43 @@
-[build-system]
-requires = ["setuptools>=45", "wheel"]
-build-backend = "setuptools.build_meta"
-
 [project]
-name = "your-project-name"
+name = "intelligent-complaint-analysis"
 version = "0.1.0"
-description = ""
-requires-python = ">=3.8"
+description = "A Retrieval-Augmented Generation system for financial complaint analysis using embeddings, FAISS, and LLM-powered generation."
+authors = [
+    { name = "Adoniyas Tibebe" }
+]
+license = "MIT"
+readme = "README.md"
+requires-python = ">=3.10"
 
-[tool.setuptools.packages.find]
-where = ["src"]
+dependencies = [
+    "pandas>=2.3",
+    "numpy>=2.2",
+    "matplotlib>=3.10",
+    "sentence-transformers>=5.0",
+    "langchain>=0.3.26",
+    "langchain-core>=0.3.68",
+    "langchain-text-splitters>=0.3.8",
+    "faiss-cpu>=1.11.0",
+    "transformers>=4.53",
+    "torch>=2.7",
+    "llama_cpp_python @ file:///C:/Users/adoni/Downloads/llama_cpp_python-0.2.26-cp310-cp310-win_amd64.whl",
+    "streamlit>=1.46",
+    "pytest>=8.4",
+    "pyarrow>=20.0",
+    "scikit-learn>=1.7",
+    "tqdm>=4.67",
+    "joblib>=1.5",
+    "regex>=2024.11",
+    "PyYAML>=6.0"
+]
+
+[tool.pytest.ini_options]
+minversion = "8.0"
+addopts = "-v"
+testpaths = [
+    "tests"
+]
+
+[build-system]
+requires = ["setuptools>=64", "wheel"]
+build-backend = "setuptools.build_meta"
